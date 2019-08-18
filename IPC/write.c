@@ -13,7 +13,7 @@ int main(int argc, char const *argv[])
 
 	fgets(msg, 20, stdin);
 	int n = write(fifo, msg, strlen(msg));
-	printf("sebded %d bytes to FIFO\n", n);
+	printf("sended %d bytes to FIFO\n", n);
 	
 	return 0;
 }

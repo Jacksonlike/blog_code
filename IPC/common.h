@@ -9,8 +9,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-
 #define FIFO "/tmp/fifotest"
-
 
 #endif
