@@ -3,6 +3,9 @@ import time
 import threading
 from multiprocessing import Process
 from functools import wraps
+import asyncio
+import aiohttp
+import threading
 
 
 def func_time(func):
@@ -53,6 +56,25 @@ def do_works_muti_processes(tasks):
         t.join()
 
 
+async def do_work_async(url):
+    print(f'{url}:{threading.currentThread().ident}')
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as _:
+            print(f'{url} done')
+
+
+async def coro_func(tasks):
+    tasks = (asyncio.create_task(do_work_async(task)) for task in tasks)
+    print('before tasks')
+    await asyncio.gather(*tasks)
+    print('finish tasks')
+
+
+@func_time
+def do_works_coroutine(tasks):
+    asyncio.run(coro_func(tasks))
+
+
 def main():
     tasks = [
         "https://movie.douban.com/subject/5912992/",
@@ -62,9 +84,10 @@ def main():
         "https://movie.douban.com/subject/21937445/",
     ]
 
-    # do_works_serial(tasks)
+    do_works_serial(tasks)
     do_works_muti_threads(tasks)
     do_works_muti_processes(tasks)
+    do_works_coroutine(tasks)
     
 
 if __name__ == '__main__':
