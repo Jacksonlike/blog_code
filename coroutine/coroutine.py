@@ -5,7 +5,6 @@ from multiprocessing import Process
 from functools import wraps
 import asyncio
 import aiohttp
-import threading
 
 
 def func_time(func):
